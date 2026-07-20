@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <div class="header">
+        <h1>Hello!</h1>
+        <p>Welcome to our website</p>
+      </div>
+      <form class="login-form">
+        <h1>Login</h1>
+        <div class="input-container">
+          <input
+            type="email"
+            id="email"
+            placeholder="email"
+            autocomplete="username" />
+          <div class="password-field" id="password-field">
+            <input
+              type="password"
+              id="password"
+              placeholder="password"
+              autocomplete="current-password" />
+            <p class="alert-message" id="alert-message"></p>
+          </div>
+          <div class="password-act">
+            <p class="alert-signup" id="alert-signup"></p>
+            <a href="#" id="message">Forget Password</a>
+          </div>
+        </div>
+        <button type="button" class="login-btn" id="login-btn">Login</button>
+        <div class="sign-up">
+          <p>Don't have account?</p>
+          <a href="./signup.html">Sign Up</a>
+        </div>
+      </form>
+    </main>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const emailEle = document.getElementById("email");
+    const passworrdEle = document.getElementById("password");
+    const loginBtn = document.getElementById("login-btn");
+    const messageEle = document.getElementById("message");
+    const alertMessageEle = document.getElementById("alert-message");
+    const alertSigupEle = document.getElementById("alert-signup");
+
+    const baseURL = "http://localhost:3000/v1/api/user/";
+
+    const handleLogin = () => {
+      let state;
+      let feat;
+      const email = emailEle.value;
+      const password = passworrdEle.value;
+
+      fetch(baseURL + "login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          state = data.status;
+          feat = data.feat;
+          console.log(state);
+          if (!state) {
+            if (feat === "password") {
+              alertMessageEle.innerHTML = data.message;
+              alertSigupEle.innerHTML = "";
+              return;
+            }
+            if (feat === "email") {
+              alertMessageEle.innerHTML = "";
+              alertSigupEle.innerHTML = data.message;
+            }
+            return;
+          } else {
+            alertMessageEle.innerHTML = "";
+            alertSigupEle.innerHTML = "";
+            emailEle.value = "";
+            passworrdEle.value = "";
+            Swal.fire({
+              title: "Login!",
+              icon: "success",
+              draggable: true,
+            });
+          }
+        })
+        .catch((error) => console.log(error.message));
+    };
+    loginBtn.onclick = () => {
+      handleLogin();
+    };
+  </script>
+</html>

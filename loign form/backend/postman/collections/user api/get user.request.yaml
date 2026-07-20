@@ -1,0 +1,5 @@
+$kind: http-request
+name: get user
+url: http://localhost:3000/v1/api/user/
+method: GET
+order: 4000

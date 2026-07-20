@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <div class="header">
+        <h1>Hello!</h1>
+        <p>Welcome to our website</p>
+      </div>
+      <form class="login-form">
+        <h1>Sign up</h1>
+        <div class="input-container">
+          <div class="password-field">
+            <input
+              required
+              type="email"
+              id="email"
+              placeholder="email"
+              autocomplete="username" />
+            <p class="alert-message" id="alert-message-email"></p>
+          </div>
+          <div class="password-field" id="password-field">
+            <input
+              required
+              type="password"
+              id="password"
+              placeholder="password"
+              autocomplete="new-password" />
+            <p class="alert-message" id="alert-message-pass"></p>
+          </div>
+          <input
+            required
+            type="password"
+            id="cf-password"
+            placeholder="confirm password"
+            autocomplete="new-password" />
+          <input required type="text" id="phone" placeholder="phone" />
+          <p class="alert-signup" id="alert-login"></p>
+        </div>
+        <button type="button" class="login-btn" id="signup-btn">Sign Up</button>
+        <div class="sign-up">
+          <p>Already have account?</p>
+          <a href="./index.html">Login</a>
+        </div>
+      </form>
+    </main>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const emailEle = document.getElementById("email");
+    const passworrdEle = document.getElementById("password");
+    const cfPasswordEle = document.getElementById("cf-password");
+    const alertMessagePassELe = document.getElementById("alert-message-pass");
+    const alertMessageEmailELe = document.getElementById("alert-message-email");
+    const alertLoginEle = document.getElementById("alert-login");
+    const phoneELe = document.getElementById("phone");
+
+    const signupBtn = document.getElementById("signup-btn");
+
+    const isMissMatch = () => {
+      const password = passworrdEle.value;
+      const cfPassword = cfPasswordEle.value;
+
+      if (cfPassword.length === 0) {
+        alertMessagePassELe.innerHTML = "";
+        return false;
+      }
+      if (password !== cfPassword) {
+        alertMessagePassELe.innerHTML = "password not match!";
+        return false;
+      } else {
+        alertMessagePassELe.innerHTML = "";
+        return true;
+      }
+    };
+    passworrdEle.addEventListener("input", isMissMatch);
+    cfPasswordEle.addEventListener("input", isMissMatch);
+
+    const baseURL = "http://localhost:3000/v1/api/user/";
+
+    const handleSignup = () => {
+      const email = emailEle.value;
+      const phone = phoneELe.value;
+      const password = passworrdEle.value;
+      const confirmPassword = cfPasswordEle.value;
+
+      fetch(baseURL + "signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          confirmPassword,
+          phone,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.feat === "email") {
+            alertMessageEmailELe.innerHTML = data.message;
+            alertLoginEle.innerHTML = data.message + " login instead";
+          } else {
+            alertLoginEle.innerHTML = "";
+            alertMessageEmailELe.innerHTML = "";
+            emailEle.value = "";
+            passworrdEle.value = "";
+            cfPasswordEle.value = "";
+            phoneELe.value = "";
+            Swal.fire({
+              title: "Signup!",
+              icon: "success",
+              draggable: true,
+            });
+          }
+        })
+        .catch((error) => console.log(error.message));
+    };
+    signupBtn.onclick = () => {
+      handleSignup();
+    };
+  </script>
+</html>
