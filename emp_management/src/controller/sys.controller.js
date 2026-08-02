@@ -94,6 +94,10 @@ const deleteEmployee = async (req, res) => {
   const { empCode } = req.body;
   const sql = `DELETE FROM employee WHERE EmpCode = ?`;
   try {
+    if (!empCode) {
+      res.status(404).send({ error: "empCode is required" });
+      return;
+    }
     await db.query(sql, [empCode]);
     const employee = await fetchAllEmployee();
     res.send({
