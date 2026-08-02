@@ -1,9 +1,8 @@
 const db = require("../config/config");
-
+const { missing } = require("../helper/validate");
 const fetchAllEmployee = async () => {
   const sql = `SELECT * FROM employee WHERE 1`;
   const result = await db.query(sql);
-  const employee = await fetchAllEmployee();
   if (result === "" || result.length == 0 || result === undefined) {
     res.status(404).send({ error: "employee list is empty!" });
     return;
@@ -12,9 +11,7 @@ const fetchAllEmployee = async () => {
 };
 
 const getAllEmployee = async (req, res) => {
-  const sql = `
-        SELECT * FROM employee WHERE 1
-    `;
+  const employee = await fetchAllEmployee();
   try {
     res.send({
       employee,
@@ -26,7 +23,7 @@ const getAllEmployee = async (req, res) => {
 };
 
 const createEmployee = async (req, res) => {
-  const {
+  const field = ({
     empCode,
     empName,
     gender,
@@ -36,7 +33,11 @@ const createEmployee = async (req, res) => {
     divisionID,
     branchID,
     remark,
-  } = req.body;
+  } = req.body);
+
+  // validate missing variable
+  missing(req, res, field);
+
   const sql = `
         INSERT INTO employee (EmpCode, EmpName, Gender, PositionID, DepartmentID, OfficeID, DivisionID, BranchID, remark)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -61,7 +62,7 @@ const createEmployee = async (req, res) => {
 
 const updateEmployee = async (req, res) => {
   const { empCode } = req.params;
-  const {
+  const field = ({
     empName,
     gender,
     positionID,
@@ -70,8 +71,8 @@ const updateEmployee = async (req, res) => {
     divisionID,
     branchID,
     remark,
-  } = req.body;
-
+  } = req.body);
+  missing(req, res, field);
   const sql = `
     UPDATE employee
     SET EmpName = ?,Gender= ?,PositionID=?,DepartmentID=?,OfficeID=?,DivisionID=?,BranchID=?,remark=? 
@@ -88,10 +89,19 @@ const updateEmployee = async (req, res) => {
     empCode,
   ]);
   const employee = await fetchAllEmployee();
-  res.send({
-    update: "sucess",
-    employee,
-  });
+  try {
+    if (!empCode) {
+      res.status(404).send({ error: "empCode is required!" });
+      return;
+    }
+    res.send({
+      update: "sucess",
+      employee,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "failed to fetch attemp!" });
+  }
 };
 
 const deleteEmployee = async (req, res) => {
@@ -104,7 +114,9 @@ const deleteEmployee = async (req, res) => {
     }
     await db.query(sql, [empCode]);
     const employee = await fetchAllEmployee();
+    const index = employee.findIndex((emp) => emp.EmpCode === empCode);
     res.send({
+      index,
       delete: "success",
       employee,
     });
