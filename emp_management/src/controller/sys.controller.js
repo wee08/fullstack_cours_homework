@@ -73,6 +73,13 @@ const updateEmployee = async (req, res) => {
     remark,
   } = req.body);
   missing(req, res, field);
+  const employeeBefore = await fetchAllEmployee();
+  const index = await checkIndex(req, res, empCode, employeeBefore);
+  if (index == -1) {
+    return res.send({
+      message: "EmpCode Doesn't exist!",
+    });
+  }
   const sql = `
     UPDATE employee
     SET EmpName = ?,Gender= ?,PositionID=?,DepartmentID=?,OfficeID=?,DivisionID=?,BranchID=?,remark=? 
