@@ -112,9 +112,20 @@ const deleteEmployee = async (req, res) => {
       res.status(404).send({ error: "empCode is required" });
       return;
     }
+    // check EmpCode is exist or not
+    const employeeBefore = await fetchAllEmployee();
+    const index = await employeeBefore.findIndex(
+      (emp) => emp.EmpCode === empCode,
+    );
+    if (index == -1) {
+      return res.send({
+        message: "EmpCode Doesn't exist!",
+      });
+    }
+    // display all data after delete
     await db.query(sql, [empCode]);
     const employee = await fetchAllEmployee();
-    const index = employee.findIndex((emp) => emp.EmpCode === empCode);
+
     res.send({
       index,
       delete: "success",
