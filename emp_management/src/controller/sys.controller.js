@@ -82,4 +82,18 @@ const updateEmployee = async (req, res) => {
   });
 };
 
-module.exports = { getAllEmployee, createEmployee, updateEmployee };
+const deleteEmployee = async (req, res) => {
+  const { empCode } = req.body;
+  const sql = `DELETE FROM employee WHERE EmpCode = ?`;
+  result = await db.query(sql, [empCode]);
+  res.send({
+    delete: "success",
+  });
+};
+
+module.exports = {
+  getAllEmployee,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+};
