@@ -1,12 +1,13 @@
 const db = require("../config/config");
 
+let result;
+
 const getAllEmployee = async (req, res) => {
   const sql = `
         SELECT * FROM employee
     `;
-
   try {
-    let [result] = await db.query(sql);
+    result = await db.query(sql);
     res.send({
       employee: result,
     });
@@ -17,15 +18,68 @@ const getAllEmployee = async (req, res) => {
 };
 
 const createEmployee = async (req, res) => {
+  const {
+    empCode,
+    empName,
+    gender,
+    positionID,
+    departmentID,
+    officeID,
+    divisionID,
+    branchID,
+    remark,
+  } = req.body;
   const sql = `
         INSERT INTO employee (EmpCode, EmpName, Gender, PositionID, DepartmentID, OfficeID, DivisionID, BranchID, remark)
-        VALUES ('A21', 'Dara', 'M', 'P01', 'D10', 'of_001', 'Div_010', 'Branch_01', '12')
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-  const result = await db.query(sql);
+  result = await db.query(sql, [
+    empCode,
+    empName,
+    gender,
+    positionID,
+    departmentID,
+    officeID,
+    divisionID,
+    branchID,
+    remark,
+  ]);
   res.send({
     status: "success",
-    newEmp: result,
   });
 };
 
-module.exports = { getAllEmployee, createEmployee };
+const updateEmployee = async (req, res) => {
+  const empCode = req.params;
+  const {
+    empName,
+    gender,
+    positionID,
+    departmentID,
+    officeID,
+    divisionID,
+    branchID,
+    remark,
+  } = req.body;
+
+  const sql = `
+    UPDATE employee
+    SET EmpName = ?,Gender= ?,PositionID=?,DepartmentID=?,OfficeID=?,DivisionID=?,BranchID=?,remark=? 
+    WHERE EmpCode = ?`;
+  result = await db.query(sql, [
+    empName,
+    gender,
+    positionID,
+    departmentID,
+    officeID,
+    divisionID,
+    branchID,
+    remark,
+    empCode,
+  ]);
+  res.send({
+    update: "sucess",
+  });
+};
+
+module.exports = { getAllEmployee, createEmployee, updateEmployee };
