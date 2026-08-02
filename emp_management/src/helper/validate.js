@@ -16,7 +16,7 @@ function missing(req, res, field) {
   }
 }
 
-function IsEmpExist(req, res, index) {
+function isEmpExist(req, res, index) {
   if (index == -1) {
     return res.send({
       message: "EmpCode Doesn't exist!",
@@ -26,5 +26,5 @@ function IsEmpExist(req, res, index) {
 
 module.exports = {
   missing,
-  IsEmpExist,
+  isEmpExist,
 };
