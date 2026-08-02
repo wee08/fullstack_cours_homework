@@ -26,4 +26,5 @@ function IsEmpExist(req, res, index) {
 
 module.exports = {
   missing,
+  IsEmpExist,
 };
