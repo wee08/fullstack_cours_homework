@@ -15,14 +15,18 @@ function missing(req, res, field) {
   }
 }
 
-async function checkIndex(req, res, empCode, employeeBefore) {
+async function checkEmpExistend(req, res, empCode, employeeBefore) {
   const index = await employeeBefore.findIndex(
     (emp) => emp.EmpCode === empCode,
   );
-  return index;
+  if (index == -1) {
+    return res.send({
+      message: "EmpCode Doesn't exist!",
+    });
+  }
 }
 
 module.exports = {
   missing,
-  checkIndex,
+  checkEmpExistend,
 };

@@ -1,5 +1,5 @@
 const db = require("../config/config");
-const { missing, checkIndex } = require("../helper/validate");
+const { missing, checkEmpExistend } = require("../helper/validate");
 const fetchAllEmployee = async () => {
   const sql = `SELECT * FROM employee WHERE 1`;
   const result = await db.query(sql);
@@ -74,12 +74,8 @@ const updateEmployee = async (req, res) => {
   } = req.body);
   missing(req, res, field);
   const employeeBefore = await fetchAllEmployee();
-  const index = await checkIndex(req, res, empCode, employeeBefore);
-  if (index == -1) {
-    return res.send({
-      message: "EmpCode Doesn't exist!",
-    });
-  }
+  await checkEmpExistend(req, res, empCode, employeeBefore);
+
   const sql = `
     UPDATE employee
     SET EmpName = ?,Gender= ?,PositionID=?,DepartmentID=?,OfficeID=?,DivisionID=?,BranchID=?,remark=? 
@@ -121,12 +117,8 @@ const deleteEmployee = async (req, res) => {
     }
     // check EmpCode is exist or not
     const employeeBefore = await fetchAllEmployee();
-    const index = await checkIndex(req, res, empCode, employeeBefore);
-    if (index == -1) {
-      return res.send({
-        message: "EmpCode Doesn't exist!",
-      });
-    }
+    await checkEmpExistend(req, res, empCode, employeeBefore);
+
     // display all data after delete
     await db.query(sql, [empCode]);
     const employee = await fetchAllEmployee();
