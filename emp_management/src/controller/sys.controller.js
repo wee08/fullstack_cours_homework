@@ -1,15 +1,19 @@
 const db = require("../config/config");
 
-let result;
+const fetchAllEmployee = async () => {
+  const sql = `SELECT * FROM employee WHERE 1`;
+  const result = await db.query(sql);
+  return result[0];
+};
 
 const getAllEmployee = async (req, res) => {
   const sql = `
-        SELECT * FROM employee
+        SELECT * FROM employee WHERE 1
     `;
   try {
-    result = await db.query(sql);
+    const employee = await fetchAllEmployee();
     res.send({
-      employee: result,
+      employee,
     });
   } catch (err) {
     console.error(err);
@@ -33,7 +37,7 @@ const createEmployee = async (req, res) => {
         INSERT INTO employee (EmpCode, EmpName, Gender, PositionID, DepartmentID, OfficeID, DivisionID, BranchID, remark)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-  result = await db.query(sql, [
+  await db.query(sql, [
     empCode,
     empName,
     gender,
@@ -44,8 +48,10 @@ const createEmployee = async (req, res) => {
     branchID,
     remark,
   ]);
+  const employee = await fetchAllEmployee();
   res.send({
     status: "success",
+    employee,
   });
 };
 
@@ -66,7 +72,7 @@ const updateEmployee = async (req, res) => {
     UPDATE employee
     SET EmpName = ?,Gender= ?,PositionID=?,DepartmentID=?,OfficeID=?,DivisionID=?,BranchID=?,remark=? 
     WHERE EmpCode = ?`;
-  result = await db.query(sql, [
+  await db.query(sql, [
     empName,
     gender,
     positionID,
@@ -77,18 +83,27 @@ const updateEmployee = async (req, res) => {
     remark,
     empCode,
   ]);
+  const employee = await fetchAllEmployee();
   res.send({
     update: "sucess",
+    employee,
   });
 };
 
 const deleteEmployee = async (req, res) => {
   const { empCode } = req.body;
   const sql = `DELETE FROM employee WHERE EmpCode = ?`;
-  result = await db.query(sql, [empCode]);
-  res.send({
-    delete: "success",
-  });
+  try {
+    await db.query(sql, [empCode]);
+    const employee = await fetchAllEmployee();
+    res.send({
+      delete: "success",
+      employee,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "failed to fetch attemp!" });
+  }
 };
 
 module.exports = {
