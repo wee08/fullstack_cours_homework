@@ -3,6 +3,11 @@ const db = require("../config/config");
 const fetchAllEmployee = async () => {
   const sql = `SELECT * FROM employee WHERE 1`;
   const result = await db.query(sql);
+  const employee = await fetchAllEmployee();
+  if (result === "" || result.length == 0 || result === undefined) {
+    res.status(404).send({ error: "employee list is empty!" });
+    return;
+  }
   return result[0];
 };
 
@@ -11,7 +16,6 @@ const getAllEmployee = async (req, res) => {
         SELECT * FROM employee WHERE 1
     `;
   try {
-    const employee = await fetchAllEmployee();
     res.send({
       employee,
     });
