@@ -50,7 +50,7 @@ const createEmployee = async (req, res) => {
 };
 
 const updateEmployee = async (req, res) => {
-  const empCode = req.params;
+  const { empCode } = req.params;
   const {
     empName,
     gender,

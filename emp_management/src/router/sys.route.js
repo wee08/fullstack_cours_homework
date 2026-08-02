@@ -7,7 +7,7 @@ const {
 const sysRoute = (app) => {
   app.get("/v1/api/employee/getEmp", getAllEmployee);
   app.post("/v1/api/employee/createEmp", createEmployee);
-  app.put("/v1/api/employee/updateEmp", updateEmployee);
+  app.put("/v1/api/employee/updateEmp/:empCode", updateEmployee);
 };
 
 module.exports = sysRoute;
