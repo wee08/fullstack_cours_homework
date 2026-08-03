@@ -1,11 +1,19 @@
 const db = require("../config/config");
+const fs = require("fs");
 
 // gloabl variable
 let result;
 
+const exportProductToJson = async () => {
+  const jsonPath = "../../data/product.json";
+  const [row] = db.query("SELECT * FROM product");
+  fs.writeFileSync(jsonPath, JSON.stringify(row, null, 2));
+};
+
 const fetchAllProduct = async () => {
   const sql = `SELECT * FROM product WHERE 1`;
   result = await db.query(sql);
+  await exportProductToJson();
   return result[0];
 };
 
