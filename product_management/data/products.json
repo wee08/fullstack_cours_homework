@@ -6,12 +6,6 @@
     "import_date": "2026-03-11T17:00:00.000Z"
   },
   {
-    "pro_id": "P02",
-    "pro_name": "Basket Ball",
-    "pro_price": "15.99",
-    "import_date": "2025-01-09T17:00:00.000Z"
-  },
-  {
     "pro_id": "P03",
     "pro_name": "Tennis Ball",
     "pro_price": "15.99",
