@@ -10,18 +10,25 @@ const fetchAllProduct = async () => {
 
 const getAllProduct = async (req, res) => {
   const products = await fetchAllProduct();
-  await exportProductToJson();
-  res.send({ products });
+  try {
+    await exportProductToJson();
+    res.send({ products });
+  } catch (error) {
+    res.send({ message: error.message });
+  }
 };
 
 const getProductById = async (req, res) => {
   const sql = `SELECT * FROM product WHERE pro_id = ?`;
   const { pro_id } = req.params;
-
-  const result = await db.query(sql, [pro_id]);
-  res.send({
-    product: result[0],
-  });
+  try {
+    const result = await db.query(sql, [pro_id]);
+    res.send({
+      product: result[0],
+    });
+  } catch (error) {
+    res.send({ message: error.message });
+  }
 };
 
 const createProduct = async (req, res) => {
@@ -32,13 +39,16 @@ const createProduct = async (req, res) => {
   const field = ({ pro_id, pro_name, pro_price, import_date } = req.body);
 
   missingValue(req, res, field);
-
-  await db.query(sql, [pro_id, pro_name, pro_price, import_date]);
-  const product = await fetchAllProduct();
-  await exportProductToJson();
-  res.send({
-    product,
-  });
+  try {
+    await db.query(sql, [pro_id, pro_name, pro_price, import_date]);
+    const product = await fetchAllProduct();
+    await exportProductToJson();
+    res.send({
+      product,
+    });
+  } catch (error) {
+    res.send({ message: error.message });
+  }
 };
 
 const udpateProduct = async (req, res) => {
@@ -55,12 +65,16 @@ const udpateProduct = async (req, res) => {
   missingValue(req, res, field);
 
   const { proId } = req.params;
-  await db.query(sql, [pro_id, pro_name, pro_price, import_date, proId]);
-  const products = await fetchAllProduct();
-  await exportProductToJson();
-  res.send({
-    products,
-  });
+  try {
+    await db.query(sql, [pro_id, pro_name, pro_price, import_date, proId]);
+    const products = await fetchAllProduct();
+    await exportProductToJson();
+    res.send({
+      products,
+    });
+  } catch (error) {
+    res.send({ message: error.message });
+  }
 };
 
 const deleteProduct = async (req, res) => {
@@ -71,12 +85,16 @@ const deleteProduct = async (req, res) => {
 
   missingValue(req, res, field);
 
-  await db.query(sql, [pro_id]);
-  const products = await fetchAllProduct();
-  await exportProductToJson();
-  res.send({
-    products,
-  });
+  try {
+    await db.query(sql, [pro_id]);
+    const products = await fetchAllProduct();
+    await exportProductToJson();
+    res.send({
+      products,
+    });
+  } catch (error) {
+    res.send({ message: error.message });
+  }
 };
 
 module.exports = {
