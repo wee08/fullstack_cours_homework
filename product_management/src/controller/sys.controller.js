@@ -1,5 +1,6 @@
 const db = require("../config/config");
 const { exportProductToJson } = require("../utils/exportProductToJson");
+const { missingValue } = require("../helper/validate");
 
 const fetchAllProduct = async () => {
   const sql = `SELECT * FROM product`;
@@ -28,7 +29,10 @@ const createProduct = async (req, res) => {
     INSERT INTO product (pro_id,pro_name,pro_price,import_date)
     VALUES (?,?,?,?)
   `;
-  const { pro_id, pro_name, pro_price, import_date } = req.body;
+  const field = ({ pro_id, pro_name, pro_price, import_date } = req.body);
+
+  missingValue(req, res, field);
+
   await db.query(sql, [pro_id, pro_name, pro_price, import_date]);
   const product = await fetchAllProduct();
   await exportProductToJson();
@@ -46,7 +50,10 @@ const udpateProduct = async (req, res) => {
         import_date = ?
         WHERE pro_id = ?
     `;
-  const { pro_id, pro_name, pro_price, import_date } = req.body;
+  const field = ({ pro_id, pro_name, pro_price, import_date } = req.body);
+
+  missingValue(req, res, field);
+
   const { proId } = req.params;
   await db.query(sql, [pro_id, pro_name, pro_price, import_date, proId]);
   const products = await fetchAllProduct();
@@ -60,7 +67,10 @@ const deleteProduct = async (req, res) => {
   const sql = `
         DELETE FROM product WHERE pro_id = ?
     `;
-  const { pro_id } = req.body;
+  const field = ({ pro_id } = req.body);
+
+  missingValue(req, res, field);
+
   await db.query(sql, [pro_id]);
   const products = await fetchAllProduct();
   await exportProductToJson();
