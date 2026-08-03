@@ -55,9 +55,22 @@ const udpateProduct = async (req, res) => {
   });
 };
 
+const deleteProduct = async (req, res) => {
+  const sql = `
+        DELETE FROM product WHERE pro_id = ?
+    `;
+  const { pro_id } = req.body;
+  await db.query(sql, [pro_id]);
+  const products = await fetchAllProduct();
+  res.send({
+    products,
+  });
+};
+
 module.exports = {
   getAllProduct,
   getProductById,
   createProduct,
   udpateProduct,
+  deleteProduct,
 };
