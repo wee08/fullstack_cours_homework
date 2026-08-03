@@ -1,17 +1,15 @@
 const db = require("../config/config");
 const { exportProductToJson } = require("../utils/exportProductToJson");
-// gloabl variable
-let result;
 
 const fetchAllProduct = async () => {
-  const sql = `SELECT * FROM product WHERE 1`;
-  result = await db.query(sql);
-  exportProductToJson();
+  const sql = `SELECT * FROM product`;
+  const result = await db.query(sql);
   return result[0];
 };
 
 const getAllProduct = async (req, res) => {
   const products = await fetchAllProduct();
+  await exportProductToJson();
   res.send({ products });
 };
 
@@ -33,6 +31,7 @@ const createProduct = async (req, res) => {
   const { pro_id, pro_name, pro_price, import_date } = req.body;
   await db.query(sql, [pro_id, pro_name, pro_price, import_date]);
   const product = await fetchAllProduct();
+  await exportProductToJson();
   res.send({
     product,
   });
@@ -51,6 +50,7 @@ const udpateProduct = async (req, res) => {
   const { proId } = req.params;
   await db.query(sql, [pro_id, pro_name, pro_price, import_date, proId]);
   const products = await fetchAllProduct();
+  await exportProductToJson();
   res.send({
     products,
   });
@@ -63,6 +63,7 @@ const deleteProduct = async (req, res) => {
   const { pro_id } = req.body;
   await db.query(sql, [pro_id]);
   const products = await fetchAllProduct();
+  await exportProductToJson();
   res.send({
     products,
   });
