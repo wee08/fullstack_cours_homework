@@ -1,3 +1,5 @@
+const { sysRoute } = require("./src/router/sys.route");
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -7,9 +9,7 @@ app.use(cors());
 
 const PORT = 3000;
 
-app.get("/", (req, res) => {
-  res.send("homepage");
-});
+sysRoute(app);
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`);
