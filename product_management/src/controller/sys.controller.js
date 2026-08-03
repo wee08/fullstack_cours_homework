@@ -24,4 +24,17 @@ const getProductById = async (req, res) => {
   });
 };
 
-module.exports = { getAllProduct, getProductById };
+const createProduct = async (req, res) => {
+  const sql = `
+    INSERT INTO product (pro_id,pro_name,pro_price,import_date)
+    VALUES (?,?,?,?)
+  `;
+  const { pro_id, pro_name, pro_price, import_date } = req.body;
+  await db.query(sql, [pro_id, pro_name, pro_price, import_date]);
+  const product = await fetchAllProduct();
+  res.send({
+    product,
+  });
+};
+
+module.exports = { getAllProduct, getProductById, createProduct };
