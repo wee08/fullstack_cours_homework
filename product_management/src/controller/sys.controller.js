@@ -14,7 +14,7 @@ const getAllProduct = async (req, res) => {
     await exportProductToJson();
     res.send({ products });
   } catch (error) {
-    res.send({ message: error.message });
+    res.send({ error });
   }
 };
 
@@ -27,7 +27,7 @@ const getProductById = async (req, res) => {
       product: result[0],
     });
   } catch (error) {
-    res.send({ message: error.message });
+    res.send({ error });
   }
 };
 
@@ -47,7 +47,7 @@ const createProduct = async (req, res) => {
       product,
     });
   } catch (error) {
-    res.send({ message: error.message });
+    res.send({ error });
   }
 };
 
@@ -73,7 +73,7 @@ const udpateProduct = async (req, res) => {
       products,
     });
   } catch (error) {
-    res.send({ message: error.message });
+    res.send({ error });
   }
 };
 
@@ -93,7 +93,7 @@ const deleteProduct = async (req, res) => {
       products,
     });
   } catch (error) {
-    res.send({ message: error.message });
+    res.send({ error });
   }
 };
 
