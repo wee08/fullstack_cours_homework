@@ -1,7 +1,7 @@
 const { getAllProduct } = require("../controller/sys.controller");
 
-const sysRoute = (app) => {
+const productMasterRoute = (app) => {
   app.get("/v1/api/product/getAll", getAllProduct);
 };
 
-module.exports = { sysRoute };
+module.exports = { productMasterRoute };

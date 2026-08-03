@@ -1,4 +1,4 @@
-const { sysRoute } = require("./src/router/sys.route");
+const { productMasterRoute } = require("./src/router/product.master.route");
 
 const express = require("express");
 const cors = require("cors");
@@ -9,7 +9,7 @@ app.use(cors());
 
 const PORT = 3000;
 
-sysRoute(app);
+productMasterRoute(app);
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`);
