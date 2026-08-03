@@ -37,4 +37,27 @@ const createProduct = async (req, res) => {
   });
 };
 
-module.exports = { getAllProduct, getProductById, createProduct };
+const udpateProduct = async (req, res) => {
+  const sql = `
+        UPDATE product SET 
+        pro_id = ?,
+        pro_name = ?,
+        pro_price = ?,
+        import_date = ?
+        WHERE pro_id = ?
+    `;
+  const { pro_id, pro_name, pro_price, import_date } = req.body;
+  const { proId } = req.params;
+  await db.query(sql, [pro_id, pro_name, pro_price, import_date, proId]);
+  const products = await fetchAllProduct();
+  res.send({
+    products,
+  });
+};
+
+module.exports = {
+  getAllProduct,
+  getProductById,
+  createProduct,
+  udpateProduct,
+};
