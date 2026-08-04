@@ -1,7 +1,11 @@
+const { fetchAllUser } = require("../utils/fetchAllUser");
 const db = require("../config/config");
 const signup = require("./signup.controller");
-const login = (req, res) => {
+
+const login = async (req, res) => {
   const { email, password } = req.body;
+
+  const userData = await fetchAllUser();
 
   const index = userData.findIndex((i) => i.email === email);
 
@@ -12,9 +16,9 @@ const login = (req, res) => {
       message: "do you want to sign up?",
     });
   }
-  const userEmail = userData[index].email;
-  const userPassword = userData[index].password;
-  const userExists = userData[index] === email;
+  const userEmail = await userData[index].email;
+  const userPassword = await userData[index].password;
+  const userExists = (await userData[index]) === email;
 
   if (userPassword !== password) {
     return res.send({
@@ -24,7 +28,7 @@ const login = (req, res) => {
     });
   }
 
-  const userInfo = userData[index];
+  const userInfo = await userData[index];
 
   if (userEmail === email && userPassword === password) {
     return res.send({
