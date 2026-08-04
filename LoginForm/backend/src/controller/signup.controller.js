@@ -1,9 +1,12 @@
 const db = require("../config/config");
 const { fetchAllUser } = require("../utils/fetchAllUser");
+
+const bcrypt = require("bcrypt");
+
 const signup = async (req, res) => {
   const sql = `
-      INSERT INTO user_information(name,email,password,confirmPassword,phone)
-      VALUES (?,?,?,?,?)
+      INSERT INTO user_information(name,email,password,phone)
+      VALUES (?,?,?,?)
   `;
 
   const { name, email, password, confirmPassword, phone } = req.body;
@@ -20,11 +23,13 @@ const signup = async (req, res) => {
     });
   }
 
-  await db.query(sql, [name, email, password, confirmPassword, phone]);
+  const saltRounds = 10;
+
+  const HashPassword = await bcrypt.hash(password, saltRounds);
+  await db.query(sql, [name, email, HashPassword, phone]);
 
   const newUser = {
     email,
-    password,
     phone,
   };
   userData.push(newUser);
