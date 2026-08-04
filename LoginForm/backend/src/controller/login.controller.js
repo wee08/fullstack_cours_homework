@@ -1,4 +1,6 @@
 const { fetchAllUser } = require("../utils/fetchAllUser");
+const { isMatchPassword } = require("../utils/hashPassword");
+
 const db = require("../config/config");
 const signup = require("./signup.controller");
 
@@ -7,8 +9,9 @@ const login = async (req, res) => {
 
   const userData = await fetchAllUser();
 
-  const index = userData.findIndex((i) => i.email === email);
+  const index = await userData.findIndex((i) => i.email === email);
 
+  // check is new account
   if (index == -1) {
     return res.send({
       status: false,
@@ -18,9 +21,10 @@ const login = async (req, res) => {
   }
   const userEmail = await userData[index].email;
   const userPassword = await userData[index].password;
-  const userExists = (await userData[index]) === email;
 
-  if (userPassword !== password) {
+  const isMatch = await isMatchPassword(password, userPassword);
+
+  if (!isMatch) {
     return res.send({
       status: false,
       feat: "password",
@@ -28,14 +32,12 @@ const login = async (req, res) => {
     });
   }
 
-  const userInfo = await userData[index];
+  const userInfo = userData[index];
 
-  if (userEmail === email && userPassword === password) {
-    return res.send({
-      status: true,
-      userInfo,
-    });
-  }
+  return res.send({
+    status: true,
+    userInfo,
+  });
 };
 
 module.exports = login;
