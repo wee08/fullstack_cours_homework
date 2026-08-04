@@ -1,6 +1,11 @@
 const db = require("../config/config");
 const { fetchAllUser } = require("../utils/fetchAllUser");
 const { hashPassword } = require("../utils/hashPassword");
+const {
+  checkIsUserExists,
+  checkIsMisMatchPassword,
+} = require("../helper/validate");
+const { exportUserToJson } = require("../utils/exportUserToJson");
 const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
@@ -16,27 +21,14 @@ const signup = async (req, res) => {
   const index = userData.findIndex((i) => i.email === email);
 
   // check does user exist
-  if (index !== -1) {
-    return res.send({
-      status: false,
-      feat: "email",
-      message: "user already exists",
-    });
-  }
-
+  await checkIsUserExists(res, index);
   // check missmatch password
-  if (password != confirmPassword) {
-    return res.send({
-      status: false,
-      message: "password doesn't match",
-    });
-  }
-
+  await checkIsMisMatchPassword(res, password, confirmPassword);
   // hashing password
   hashed = await hashPassword(password);
 
   await db.query(sql, [name, email, hashed, phone]);
-
+  await exportUserToJson();
   const newUser = {
     email,
     phone,

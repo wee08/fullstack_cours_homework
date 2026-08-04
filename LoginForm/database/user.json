@@ -1,5 +1,29 @@
 [
   {
+    "name": "bongheng",
+    "email": "bongheng@gmail.com",
+    "password": "$2b$10$mgFQQDvP6uK7kc2dHoiLUe37v9jyYzAUrn2Qq9MibIqZCoBL1/ady",
+    "phone": "092121212"
+  },
+  {
+    "name": "SEAN Manutnithya2",
+    "email": "manutn2ithya08@gmail.com",
+    "password": "$2b$10$5Dt9jcz8pNAyKQRUQqh7BeZXE2yUmk1ZgSzGrS7xySZV.PvM4UwK6",
+    "phone": "123"
+  },
+  {
+    "name": "1samwqbath",
+    "email": "s1amwqbath.cs@gmail.com",
+    "password": "$2b$10$BrVjGU9t2rCvi1Uv0ZdUXeThlaP0Af6gJUamLMEcGJpxJqglRuY2O",
+    "phone": "123123"
+  },
+  {
+    "name": "nithya",
+    "email": "nit@gmail.com",
+    "password": "$2b$10$8GMgx16RlVFSjPB/DrrKCu1Cp0KVwZY47rAnhKaKL0QLql8dOOGRy",
+    "phone": "01010101"
+  },
+  {
     "name": "nithya",
     "email": "nithya@gmail.com",
     "password": "$2b$10$yKiKK.dOXaqAiyQAGZpTHOFo8lvK3C1DztdbKOhqu4EWFglHDApDG",
