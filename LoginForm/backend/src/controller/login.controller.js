@@ -1,4 +1,4 @@
-const userData = require("../data/user_data");
+const db = require("../config/config");
 const signup = require("./signup.controller");
 const login = (req, res) => {
   const { email, password } = req.body;

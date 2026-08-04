@@ -1,4 +1,3 @@
-const userData = require("../data/user_data");
 const signup = (req, res) => {
   const { email, password, confirmPassword, phone } = req.body;
 
