@@ -1,6 +1,6 @@
 const db = require("../config/config");
 const { fetchAllUser } = require("../utils/fetchAllUser");
-
+const { hashPassword } = require("../utils/hashPassword");
 const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
@@ -23,10 +23,10 @@ const signup = async (req, res) => {
     });
   }
 
-  const saltRounds = 10;
+  // hashing password
+  hashed = await hashPassword(password);
 
-  const HashPassword = await bcrypt.hash(password, saltRounds);
-  await db.query(sql, [name, email, HashPassword, phone]);
+  await db.query(sql, [name, email, hashed, phone]);
 
   const newUser = {
     email,
