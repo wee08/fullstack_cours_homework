@@ -15,11 +15,20 @@ const signup = async (req, res) => {
 
   const index = userData.findIndex((i) => i.email === email);
 
+  // check does user exist
   if (index !== -1) {
     return res.send({
       status: false,
       feat: "email",
       message: "user already exists",
+    });
+  }
+
+  // check missmatch password
+  if (password != confirmPassword) {
+    return res.send({
+      status: false,
+      message: "password doesn't match",
     });
   }
 
@@ -32,7 +41,6 @@ const signup = async (req, res) => {
     email,
     phone,
   };
-  userData.push(newUser);
   res.send({
     status: true,
     newUser,
