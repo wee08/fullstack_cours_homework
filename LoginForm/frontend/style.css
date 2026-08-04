@@ -97,6 +97,7 @@ body {
   display: flex;
   justify-content: space-between;
 }
+#name,
 #email,
 #password,
 #cf-password,

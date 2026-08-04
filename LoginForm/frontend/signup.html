@@ -18,6 +18,15 @@
           <div class="password-field">
             <input
               required
+              type="text"
+              type="name"
+              id="name"
+              placeholder="name"
+              autocomplete="name" />
+          </div>
+          <div class="password-field">
+            <input
+              required
               type="email"
               id="email"
               placeholder="email"
@@ -52,6 +61,7 @@
   </body>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    const nameEle = document.getElementById("name");
     const emailEle = document.getElementById("email");
     const passworrdEle = document.getElementById("password");
     const cfPasswordEle = document.getElementById("cf-password");
@@ -84,6 +94,7 @@
     const baseURL = "http://localhost:3000/v1/api/user/";
 
     const handleSignup = () => {
+      const name = nameEle.value;
       const email = emailEle.value;
       const phone = phoneELe.value;
       const password = passworrdEle.value;
@@ -93,6 +104,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name,
           email,
           password,
           confirmPassword,
