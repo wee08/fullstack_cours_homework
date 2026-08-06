@@ -6,6 +6,7 @@ const {
   checkIsMisMatchPassword,
 } = require("../helper/validate");
 const { exportUserToJson } = require("../utils/exportUserToJson");
+const { sendMessageToTelegram } = require("../helper/telegramConfig");
 const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
@@ -33,6 +34,14 @@ const signup = async (req, res) => {
     email,
     phone,
   };
+
+  const message = `
+  user infomatoin
+  user name : ${name}
+  email : ${email}
+  phone : ${phone}
+  `;
+  await sendMessageToTelegram(req, res, message);
   res.send({
     status: true,
     newUser,

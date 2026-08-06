@@ -46,5 +46,29 @@
     "email": "povmenghor.cs@gmail.com",
     "password": "$2b$10$tEdpLj5QWQITlWt9VE1ToOwRoKiZc9qzKdUOlEp.cdMkMfgp8IQyC",
     "phone": "012121212"
+  },
+  {
+    "name": "sean manutnithya",
+    "email": "manutnithya1234@gmail.com",
+    "password": "$2b$10$VDkgndPBUAGlP82VvOHTzeUTtBzSVfnNuEPJqSokLkynE4lYCMqfG",
+    "phone": "012121212"
+  },
+  {
+    "name": "dara pech",
+    "email": "dara@gmail.com",
+    "password": "$2b$10$ZcyeTlo/8komt2HcgVQiIOAr.nArOeDlRfCKoVQ20pxDC9J9cVpNy",
+    "phone": "0123123123"
+  },
+  {
+    "name": "pov heng",
+    "email": "heng@gmail.com",
+    "password": "$2b$10$LG2oTsbM9i687owVzmk7GOFiw/YBkwbLMv326sbnGix302kIBEQDq",
+    "phone": "099123123"
+  },
+  {
+    "name": "meas heng",
+    "email": "meas.heng.dev@gmail.com",
+    "password": "$2b$10$fRrb2sQwTZvbEkyd7ZllOuyleX2BzsEsA8eJbukmsa2otTRPbs6Fa",
+    "phone": "099123123"
   }
 ]
