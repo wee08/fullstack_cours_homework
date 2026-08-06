@@ -124,7 +124,6 @@ const deleteEmployee = async (req, res) => {
     const employee = await fetchAllEmployee();
 
     res.send({
-      index,
       delete: "success",
       employee,
     });
