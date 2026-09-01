@@ -1,15 +1,53 @@
-import PageHead from "@/components/features/students/components/PageHead";
 import "../../index.css";
+import PageHead from "@/components/features/students/components/PageHead";
 import Table from "@/components/features/students/components/Table";
 import TopBar from "@/components/layout/TopBar";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import CardHead from "@/components/features/students/components/CardHead";
 import ConfimDialog from "@/components/features/students/components/ConfimDialog";
 import Modal from "@/components/common/Modal";
 
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
 const AllStudents = () => {
+  const containerRef = useRef(null);
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({ defaults: { ease: "power1.out" } });
+
+      tl.fromTo(
+        ".topbar, .mobile-topbar",
+        { opacity: 0, y: -8 },
+        { opacity: 1, y: 0, duration: 0.3 },
+      )
+        .fromTo(
+          ".card",
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.4, stagger: 0.08 },
+          "-=0.1",
+        )
+        .fromTo(
+          ".table-row",
+          { opacity: 0, x: -8 },
+          { opacity: 1, x: 0, duration: 0.25, stagger: 0.03 },
+          "-=0.2",
+          {
+            onComplete: () => {
+              wireHoverScale(".btn", 1.035);
+              wireHoverScale(".icon-btn", 1.08);
+              wireHoverScale(".row-action-btn", 1.12);
+              wireHoverScale(".page-btn", 1.08);
+            },
+          },
+        );
+    },
+    { scope: containerRef },
+  );
   return (
-    <main className="main">
+    <main className="main" ref={containerRef}>
       <TopBar />
       <ConfimDialog />
       <Modal />
