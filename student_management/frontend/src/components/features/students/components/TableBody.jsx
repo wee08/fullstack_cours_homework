@@ -25,7 +25,7 @@ const TableBody = () => {
               <span className="student-name">{s.name}</span>
             </div>
           </td>
-          <td>{s.ids}</td>
+          <td>{s.id}</td>
           <td>{s.gender}</td>
           <td>{s.std_class}</td>
           <td>{s.phone}</td>
