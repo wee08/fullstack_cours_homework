@@ -7,9 +7,9 @@ export function StudentProvider({ children }) {
   const [students, setStudents] = useState(studentData);
   const [selectedIds, setSelectedIds] = useState([]);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [pendingDeleteIndex, setPendingDeleteIndex] = useState(null);
+  const [pendingDeleteIds, setPendingDeleteIds] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingId, setEditingId] = useState(null);
 
   const toggleSelect = (index) => {
     setSelectedIds((prev) =>
@@ -17,15 +17,13 @@ export function StudentProvider({ children }) {
     );
   };
   const selectAll = (checked) => {
-    setSelectedIds(checked ? students.map((_, i) => i) : []);
+    setSelectedIds(checked ? students.map((s) => s.id) : []);
   };
   const isAllSelected =
     students.length > 0 && selectedIds.length == students.length;
 
   const requestDeleteSingle = (index) => {
-    console.log("index: ", index);
-    console.log(confirmOpen);
-    setPendingDeleteIndex(index);
+    setPendingDeleteIds(index);
     setConfirmOpen(true);
   };
   const requestDeleteSelected = () => {
@@ -33,35 +31,39 @@ export function StudentProvider({ children }) {
       showToast("Select student to delete first", "info");
       return;
     }
-    setPendingDeleteIndex(null);
+    setPendingDeleteIds(null);
     setConfirmOpen(true);
   };
   const confirmDelete = () => {
-    if (pendingDeleteIndex !== null) {
-      setStudents((prev) => prev.filter((_, i) => i !== pendingDeleteIndex));
+    if (pendingDeleteIds !== null) {
+      setStudents((prev) => prev.filter((s) => s.id !== pendingDeleteIds));
+      setSelectedIds((prev) => prev.filter((id) => id !== pendingDeleteIds));
     } else {
-      setStudents((prev) => prev.filter((_, i) => !selectedIds.includes(i)));
+      setStudents((prev) => prev.filter((s) => !selectedIds.includes(s.id)));
       setSelectedIds([]);
     }
     setConfirmOpen(false);
-    setPendingDeleteIndex(null);
+    setPendingDeleteIds(null);
   };
   const cancelDelete = () => {
     setConfirmOpen(false);
-    setPendingDeleteIndex(null);
+    setPendingDeleteIds(null);
+  };
+  const openAddStudent = () => {
+    setModalOpen(true);
   };
   const openEdit = (index) => {
-    setEditingIndex(index);
+    setEditingId(index);
     setModalOpen(true);
   };
   const closeModal = () => {
-    setEditingIndex(null);
+    setEditingId(null);
     setModalOpen(false);
   };
   const saveStudent = (data) => {
     setStudents((prev) =>
-      editingIndex !== null ?
-        prev.map((s, i) => (i == editingIndex ? { ...s, ...data } : s))
+      editingId !== null ?
+        prev.map((s) => (s.id === editingId ? { ...s, ...data } : s))
       : [...prev, data],
     );
     closeModal();
@@ -78,10 +80,11 @@ export function StudentProvider({ children }) {
     confirmDelete,
     cancelDelete,
     modalOpen,
-    editingStudent: editingIndex !== null ? students[editingIndex] : null,
+    editingStudent: editingId !== null ? students.find((s) => s.id === editingId) : null,
     openEdit,
     closeModal,
     saveStudent,
+    openAddStudent,
   };
 
   return (
