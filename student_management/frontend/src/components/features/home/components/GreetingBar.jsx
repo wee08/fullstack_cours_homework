@@ -4,10 +4,11 @@ import { Megaphone, UserPlus } from "lucide-react";
 import { useCurrentDate } from "@/hooks/useCurrentDate";
 import NoticeModal from "./NoticeModal";
 import { Link } from "react-router-dom";
-
+import { useStudent } from "../../students/context/StudentContext";
 const GreetingBar = () => {
   useCurrentDate();
   const [modalOpen, setModalOpen] = useState(false);
+  const { openAddStudent } = useStudent();
 
   return (
     <>
@@ -29,7 +30,10 @@ const GreetingBar = () => {
             Create Notice
           </button>
 
-          <Link to={"allstudents"} className="btn btn-primary">
+          <Link
+            to={"allstudents"}
+            className="btn btn-primary"
+            onClick={() => openAddStudent()}>
             <UserPlus />
             <span>Add Student</span>
           </Link>
