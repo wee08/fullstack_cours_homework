@@ -80,7 +80,8 @@ export function StudentProvider({ children }) {
     confirmDelete,
     cancelDelete,
     modalOpen,
-    editingStudent: editingId !== null ? students.find((s) => s.id === editingId) : null,
+    editingStudent:
+      editingId !== null ? students.find((s) => s.id === editingId) : null,
     openEdit,
     closeModal,
     saveStudent,
