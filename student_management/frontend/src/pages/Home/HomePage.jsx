@@ -73,8 +73,6 @@ const HomePage = () => {
         </div>
       </main>
 
-      {/* <!-- Create Notice modal --> */}
-
       {/* <!-- Toast --> */}
       <Toast />
     </>

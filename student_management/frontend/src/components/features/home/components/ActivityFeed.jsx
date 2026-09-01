@@ -7,13 +7,15 @@ import { showToast } from "@/hooks/useToast";
 const ActivityFeed = () => {
   const [isSpinning, setIsSpinning] = useState(false);
 
-  async function handleRefresh(isSpinning) {
+  async function handleRefresh() {
     if (isSpinning) return;
     setIsSpinning(true);
     try {
       showToast("Activity feed refreshed");
     } catch (error) {
-      setTimeout(() => setIsSpinning(false), 500);
+      console.error("Failed to refresh activity feed:", error);
+    } finally {
+      setTimeout(() => setIsSpinning(false), 600);
     }
   }
 
@@ -25,7 +27,7 @@ const ActivityFeed = () => {
           className="icon-btn icon-btn--ghost"
           title="Refresh"
           id="refreshActivityBtn"
-          onClick={() => handleRefresh(isSpinning)}>
+          onClick={handleRefresh}>
           <RefreshCw className={isSpinning ? "btn-spin" : ""} />
         </button>
       </div>
