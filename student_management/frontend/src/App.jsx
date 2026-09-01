@@ -5,6 +5,7 @@ import Navbar from "./components/layout/Navbar.jsx";
 import MobileTopBar from "./components/layout/MobileTopBar.jsx";
 import { StudentProvider } from "./components/features/students/context/StudentContext.jsx";
 import Toast from "./components/Toast.jsx";
+import StudentDetail from "./pages/StudentDetails/StudentDetail.jsx";
 const App = () => {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/allstudents" element={<AllStudents />} />
+            <Route path="/studentDetail" element={<StudentDetail />} />
           </Routes>
         </div>
         <Toast />

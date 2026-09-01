@@ -27,7 +27,7 @@ export const navLinks = [
     isGroup: true,
     groupItems: [
       { title: "All Students", to: "/allstudents" },
-      { title: "Student Details", to: "/studentdetails" },
+      { title: "Student Detail", to: "/studentdetail" },
     ],
     chevron: ChevronDown,
   },
