@@ -1,8 +1,9 @@
 import { navLinks } from "@/assets/data/navLinks";
 
 import Branding from "../Navbar/Branding";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 const Navbar = () => {
+  const { pathname } = useLocation();
   return (
     <>
       <div className="app-shell">
@@ -13,10 +14,13 @@ const Navbar = () => {
             {navLinks.map((item, idx) => {
               const Icon = item.icon;
               const Title = item.title;
+              const isGroupActive =
+                item.isGroup &&
+                item.groupItems.some((sub) => pathname === sub.to);
               return item.isGroup ?
                   <div className="nav-group" key={idx}>
                     <button
-                      className="nav-item nav-parent"
+                      className={`nav-item nav-parent ${isGroupActive ? "is-active" : ""}`}
                       aria-expanded="false">
                       <Icon />
                       <span>{Title}</span>
